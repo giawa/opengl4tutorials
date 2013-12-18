@@ -2,7 +2,7 @@
 using Tao.FreeGlut;
 using OpenGL;
 
-namespace OpenGLTutorial6
+namespace OpenGLTutorial8
 {
     class Program
     {
