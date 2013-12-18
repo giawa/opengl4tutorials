@@ -14,7 +14,7 @@ namespace OpenGLTutorial6
         private static Texture crateTexture;
         private static System.Diagnostics.Stopwatch watch;
         private static float xangle, yangle;
-        private static bool autoRotate, lighting = true;
+        private static bool autoRotate, lighting = true, fullscreen = false;
         private static bool left, right, up, down;
 
         static void Main(string[] args)
@@ -31,6 +31,7 @@ namespace OpenGLTutorial6
             Glut.glutKeyboardUpFunc(OnKeyboardUp);
 
             Glut.glutCloseFunc(OnClose);
+            Glut.glutReshapeFunc(OnReshape);
 
             Gl.Enable(EnableCap.DepthTest);
 
@@ -130,6 +131,15 @@ namespace OpenGLTutorial6
             Glut.glutSwapBuffers();
         }
 
+        private static void OnReshape(int width, int height)
+        {
+            Program.width = width;
+            Program.height = height;
+
+            program.Use();
+            program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
+        }
+
         private static void OnKeyboardDown(byte key, int x, int y)
         {
             if (key == 'w') up = true;
@@ -147,6 +157,16 @@ namespace OpenGLTutorial6
             else if (key == 'a') left = false;
             else if (key == ' ') autoRotate = !autoRotate;
             else if (key == 'l') lighting = !lighting;
+            else if (key == 'f')
+            {
+                fullscreen = !fullscreen;
+                if (fullscreen) Glut.glutFullScreen();
+                else
+                {
+                    Glut.glutPositionWindow(0, 0);
+                    Glut.glutReshapeWindow(1280, 720);
+                }
+            }
         }
 
         public static string VertexShader = @"
