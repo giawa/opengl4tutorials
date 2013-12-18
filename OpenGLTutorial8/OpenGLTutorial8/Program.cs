@@ -33,7 +33,7 @@ namespace OpenGLTutorial6
             Glut.glutCloseFunc(OnClose);
             Glut.glutReshapeFunc(OnReshape);
 
-            Gl.Enable(EnableCap.DepthTest);
+            Gl.Disable(EnableCap.DepthTest);
             Gl.Enable(EnableCap.Blend);
             Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
@@ -172,8 +172,16 @@ namespace OpenGLTutorial6
             else if (key == 'b')
             {
                 alpha = !alpha;
-                if (alpha) Gl.Enable(EnableCap.Blend);
-                else Gl.Disable(EnableCap.Blend);
+                if (alpha)
+                {
+                    Gl.Enable(EnableCap.Blend);
+                    Gl.Disable(EnableCap.DepthTest);
+                }
+                else
+                {
+                    Gl.Disable(EnableCap.Blend);
+                    Gl.Enable(EnableCap.DepthTest);
+                }
             }
         }
 
