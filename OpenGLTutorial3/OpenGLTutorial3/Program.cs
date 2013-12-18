@@ -72,6 +72,8 @@ namespace OpenGLTutorial3
         }
 
         public static string VertexShader = @"
+#version 130
+
 in vec3 vertexPosition;
 in vec3 vertexColor;
 
@@ -89,11 +91,15 @@ void main(void)
 ";
 
         public static string FragmentShader = @"
+#version 130
+
 in vec3 color;
+
+out vec4 fragment;
 
 void main(void)
 {
-    gl_FragColor = vec4(color, 1);
+    fragment = vec4(color, 1);
 }
 ";
     }
