@@ -109,6 +109,7 @@ namespace OpenGLTutorial9
             if (left) phi -= deltaTime;
             if (up) theta += deltaTime;
             if (down) theta -= deltaTime;
+            if (theta < 0) theta += (float)Math.PI * 2;
 
             // set up the viewport and clear the previous depth and color buffers
             Gl.Viewport(0, 0, width, height);
@@ -120,7 +121,8 @@ namespace OpenGLTutorial9
 
             // calculate the camera position using some fancy polar co-ordinates
             Vector3 position = 20 * new Vector3(Math.Cos(phi) * Math.Sin(theta), Math.Cos(theta), Math.Sin(phi) * Math.Sin(theta));
-            program["view_matrix"].SetValue(Matrix4.LookAt(position, Vector3.Zero, Vector3.Up));
+            Vector3 upVector = ((theta % (Math.PI * 2)) > Math.PI) ? Vector3.Up : Vector3.Down;
+            program["view_matrix"].SetValue(Matrix4.LookAt(position, Vector3.Zero, upVector));
 
             // loop through the stars, drawing each one
             for (int i = 0; i < stars.Count; i++)
