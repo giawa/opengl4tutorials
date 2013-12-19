@@ -14,28 +14,28 @@ Eachtutorials  includes a .sln and .csproj file which will create an OpenGL prog
 ## Tutorials
 
 ### Tutorial 1:  Opening an OpenGL window
-![Tutorial 1](giawa.github.com/tutorials/tutorial1.jpg)
+![Tutorial 1](http://giawa.github.com/tutorials/tutorial1.jpg)
 
 ### Tutorial 2:  Rendering 2D Shapes
-![Tutorial 2](giawa.github.com/tutorials/tutorial2.jpg)
+![Tutorial 2](http://giawa.github.com/tutorials/tutorial2.jpg)
 
 ### Tutorial 3:  Color and Linear Interpolation
-![Tutorial 3](giawa.github.com/tutorials/tutorial3.jpg)
+![Tutorial 3](http://giawa.github.com/tutorials/tutorial3.jpg)
 
 ### Tutorial 4:  Rotation via the Model Matrix
-![Tutorial 4](giawa.github.com/tutorials/tutorial4.jpg)
+![Tutorial 4](http://giawa.github.com/tutorials/tutorial4.jpg)
 
 ### Tutorial 5:  Rendering 3D Shapes
-![Tutorial 5](giawa.github.com/tutorials/tutorial5.jpg)
+![Tutorial 5](http://giawa.github.com/tutorials/tutorial5.jpg)
 
 ### Tutorial 6:  Texture Mapping
-![Tutorial 6](giawa.github.com/tutorials/tutorial6.jpg)
+![Tutorial 6](http://giawa.github.com/tutorials/tutorial6.jpg)
 
 ### Tutorial 7:  Lighting, Keyboard Control and Fullscreen
-![Tutorial 7](giawa.github.com/tutorials/tutorial7.jpg)
+![Tutorial 7](http://giawa.github.com/tutorials/tutorial7.jpg)
 
 ### Tutorial 8:  Alpha Blending
-![Tutorial 8](giawa.github.com/tutorials/tutorial8.jpg)
+![Tutorial 8](http://giawa.github.com/tutorials/tutorial8.jpg)
 
 ### Tutorial 9:  Billboards and Particles
-![Tutorial 9](giawa.github.com/tutorials/tutorial9.jpg)
+![Tutorial 9](http://giawa.github.com/tutorials/tutorial9.jpg)
