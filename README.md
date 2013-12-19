@@ -15,18 +15,22 @@ Each tutorial includes a .sln and .csproj file which will create an OpenGL progr
 
 ### Tutorial 1:  Opening an OpenGL window
 [Tutorial 1 on YouTube](https://www.youtube.com/watch?v=2KEHrB82Z2M)
+
 ![Tutorial 1](https://giawa.github.com/tutorials/tutorial1.jpg)
 
 ### Tutorial 2:  Rendering 2D Shapes
 [Tutorial 2 on YouTube](https://www.youtube.com/watch?v=xNGmQ6lO6NY)
+
 ![Tutorial 2](https://giawa.github.com/tutorials/tutorial2.jpg)
 
 ### Tutorial 3:  Color and Linear Interpolation
 [Tutorial 3 on YouTube](https://www.youtube.com/watch?v=ASNfoQP_m1Q)
+
 ![Tutorial 3](https://giawa.github.com/tutorials/tutorial3.jpg)
 
 ### Tutorial 4:  Rotation via the Model Matrix
 [Tutorial 4 on YouTube](https://www.youtube.com/watch?v=RU_Dkm_-Jsc)
+
 ![Tutorial 4](https://giawa.github.com/tutorials/tutorial4.jpg)
 
 ### Tutorial 5:  Rendering 3D Shapes
