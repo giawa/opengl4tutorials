@@ -53,3 +53,6 @@ Each tutorial includes a .sln and .csproj file which will create an OpenGL progr
 
 ### Tutorial 11:  Waving Flag using Vertex Shader
 ![Tutorial 11](https://giawa.github.com/tutorials/tutorial11.jpg)
+
+### Tutorial 12:  Points, Particles and Antialiasing (Multisampling)
+![Tutorial 12](https://giawa.github.com/tutorials/tutorial12.jpg)
