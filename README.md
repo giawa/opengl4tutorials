@@ -56,3 +56,12 @@ Each tutorial includes a .sln and .csproj file which will create an OpenGL progr
 
 ### Tutorial 12:  Points, Particles and Antialiasing (Multisampling)
 ![Tutorial 12](https://giawa.github.com/tutorials/tutorial12.jpg)
+
+### Tutorial 13:  Simple Normal Mapping in Shader
+![Tutorial 13](https://giawa.github.com/tutorials/tutorial13.jpg)
+
+### Tutorial 14:  Rotating Objects with the Mouse
+![Tutorial 14](https://giawa.github.com/tutorials/tutorial14.jpg)
+
+### Tutorial 15:  Quaternion Based First Person Camera
+![Tutorial 15](https://giawa.github.com/tutorials/tutorial15.jpg)

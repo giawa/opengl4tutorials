@@ -182,7 +182,7 @@ namespace OpenGLTutorial14
         private static void OnMouse(int button, int state, int x, int y)
         {
             // this method gets called whenever a new mouse button event happens
-            if (button == Glut.GLUT_LEFT_BUTTON) mouseDown = (state == Glut.GLUT_DOWN);
+            if (button == Glut.GLUT_RIGHT_BUTTON) mouseDown = (state == Glut.GLUT_DOWN);
 
             // if the mouse has just been clicked then we hide the cursor and store the position
             if (mouseDown)
