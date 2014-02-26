@@ -12,7 +12,7 @@ namespace OpenGLTutorial16
 
         private static ShaderProgram program;
         private static ObjLoader objectFile;
-        private static bool fullscreen = false, wireframe = false;
+        private static bool fullscreen = false, wireframe = false, msaa = false;
         private static bool left, right, up, down, space;
 
         private static Camera camera;
@@ -29,8 +29,6 @@ namespace OpenGLTutorial16
             Glut.glutCreateWindow("OpenGL Tutorial");
 
             Gl.Enable(EnableCap.DepthTest);
-            //Gl.Enable(EnableCap.CullFace);
-            Gl.Enable(EnableCap.Multisample);
 
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
@@ -137,6 +135,9 @@ namespace OpenGLTutorial16
             float deltaTime = (float)watch.ElapsedTicks / System.Diagnostics.Stopwatch.Frequency;
             watch.Restart();
 
+            if (msaa) Gl.Enable(EnableCap.Multisample);
+            else Gl.Disable(EnableCap.Multisample);
+
             // update our camera by moving it up to 5 units per second in each direction
             if (down) camera.MoveRelative(Vector3.UnitZ * deltaTime * 5);
             if (up) camera.MoveRelative(-Vector3.UnitZ * deltaTime * 5);
@@ -199,6 +200,7 @@ namespace OpenGLTutorial16
             else if (key == 'a') left = false;
             else if (key == ' ') space = false;
             else if (key == 'q') wireframe = !wireframe;
+            else if (key == 'm') msaa = !msaa;
             else if (key == 'f')
             {
                 fullscreen = !fullscreen;
@@ -227,7 +229,7 @@ uniform mat4 model_matrix;
 
 void main(void)
 {
-    normal = normalize((model_matrix * vec4(vertexNormal, 0)).xyz);
+    normal = (length(vertexNormal) == 0 ? vec3(0, 0, 0) : normalize((model_matrix * vec4(vertexNormal, 0)).xyz));
     uv = vertexUV;
 
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition, 1);

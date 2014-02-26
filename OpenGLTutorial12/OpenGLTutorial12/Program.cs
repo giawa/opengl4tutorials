@@ -45,6 +45,7 @@ namespace OpenGLTutorial12
             // enable blending and set to accumulate the star colors
             Gl.Enable(EnableCap.Blend);
             Gl.Enable(EnableCap.ProgramPointSize);
+            Gl.Enable(EnableCap.Multisample);
             Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.One);
 
             // create our shader program
