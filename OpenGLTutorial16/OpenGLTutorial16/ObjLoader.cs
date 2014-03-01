@@ -79,14 +79,14 @@ namespace OpenGLTutorial16
                         if (!materials.ContainsKey(material.Name)) materials.Add(material.Name, material);
                         lines.Clear();
                     }
-                    else if (line[0] == 'm')    
+                    
+                    if (line[0] == 'm')    
                     {
                         // try to fix up filenames of texture maps
                         string[] split = line.Split(' ');
                         lines.Add(string.Format("{0} {1}", split[0], CreateFixedPath(filename, split[1])));
                     }
-
-                    if (line[0] != '#') lines.Add(line);    // ignore comments
+                    else if (line[0] != '#') lines.Add(line);    // ignore comments
                 }
             }
         }
@@ -189,8 +189,6 @@ namespace OpenGLTutorial16
                     case "illum": this.Illumination = (IlluminationMode)int.Parse(split[1]);
                         break;
                     case "map_Kd": if (File.Exists(split[1])) this.DiffuseMap = new Texture(split[1]);
-                        else if (File.Exists(split[1].Substring(split[1].LastIndexOf('\\')))) new Texture(split[1].Substring(split[1].LastIndexOf('\\')));
-                        else throw new FileNotFoundException("Could not find the file " + split[1] + " to be used as a diffuse map.");
                         break;
                 }
             }
