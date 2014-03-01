@@ -40,6 +40,7 @@ namespace OpenGLTutorial12
             Glut.glutReshapeFunc(OnReshape);
 
             Gl.Enable(EnableCap.DepthTest);
+            Gl.Enable(EnableCap.Multisample);
 
             // create our shader program
             program = new ShaderProgram(VertexShader, FragmentShader);
