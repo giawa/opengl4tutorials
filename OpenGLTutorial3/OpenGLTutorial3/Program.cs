@@ -22,6 +22,8 @@ namespace OpenGLTutorial3
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
 
+            Glut.glutCloseFunc(OnClose);
+
             program = new ShaderProgram(VertexShader, FragmentShader);
 
             program.Use();
@@ -38,6 +40,18 @@ namespace OpenGLTutorial3
             squareColor = new VBO<Vector3>(new Vector3[] { new Vector3(0.5, 0.5, 1), new Vector3(0.5, 0.5, 1), new Vector3(0.5, 0.5, 1), new Vector3(0.5, 0.5, 1) });
 
             Glut.glutMainLoop();
+        }
+
+        private static void OnClose()
+        {
+            triangle.Dispose();
+            triangleColor.Dispose();
+            triangleElements.Dispose();
+            square.Dispose();
+            squareColor.Dispose();
+            squareElements.Dispose();
+            program.DisposeChildren = true;
+            program.Dispose();
         }
 
         private static void OnDisplay()
