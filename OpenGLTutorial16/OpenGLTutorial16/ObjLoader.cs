@@ -79,14 +79,14 @@ namespace OpenGLTutorial16
                         if (!materials.ContainsKey(material.Name)) materials.Add(material.Name, material);
                         lines.Clear();
                     }
-                    else if (line[0] == 'm')    
+                    
+                    if (line[0] == 'm')
                     {
                         // try to fix up filenames of texture maps
                         string[] split = line.Split(' ');
                         lines.Add(string.Format("{0} {1}", split[0], CreateFixedPath(filename, split[1])));
                     }
-
-                    if (line[0] != '#') lines.Add(line);    // ignore comments
+                    else if (line[0] != '#') lines.Add(line);    // ignore comments
                 }
             }
         }
@@ -189,8 +189,6 @@ namespace OpenGLTutorial16
                     case "illum": this.Illumination = (IlluminationMode)int.Parse(split[1]);
                         break;
                     case "map_Kd": if (File.Exists(split[1])) this.DiffuseMap = new Texture(split[1]);
-                        else if (File.Exists(split[1].Substring(split[1].LastIndexOf('\\')))) new Texture(split[1].Substring(split[1].LastIndexOf('\\')));
-                        else throw new FileNotFoundException("Could not find the file " + split[1] + " to be used as a diffuse map.");
                         break;
                 }
             }
@@ -330,13 +328,50 @@ namespace OpenGLTutorial16
             // calculate the normals (if they didn't exist)
             Vector3[] vertexData = vertexList.ToArray();
             int[] elementData = triangleList.ToArray();
-            Vector3[] normalData = OpenGL.Geometry.CalculateNormals(vertexData, elementData);
+            Vector3[] normalData = CalculateNormals(vertexData, elementData);
+
+            /*for (int i = 0; i < triangleList.Count; i++)
+            {
+                normalData[triangleList[i]] = normalData[normalsList[i]];
+            }*/
+
+            /*for (int i = 0; i < normalData.Length; i++)
+            {
+                if (normalData[i] == Vector3.Zero) 
+                    Console.WriteLine("What's up!?!?!");
+            }*/
 
             // now convert the lists over to vertex buffer objects to be rendered by OpenGL
             this.vertices = new VBO<Vector3>(vertexData);
             this.normals = new VBO<Vector3>(normalData);
             if (unpackedUvs.Count != 0) this.uvs = new VBO<Vector2>(unpackedUvs.ToArray());
             this.triangles = new VBO<int>(elementData, BufferTarget.ElementArrayBuffer);
+        }
+
+        public static Vector3[] CalculateNormals(Vector3[] vertexData, int[] elementData)
+        {
+            Vector3 b1, b2, normal;
+            Vector3[] normalData = new Vector3[vertexData.Length];
+
+            for (int i = 0; i < elementData.Length / 3; i++)
+            {
+                int cornerA = elementData[i * 3];
+                int cornerB = elementData[i * 3 + 1];
+                int cornerC = elementData[i * 3 + 2];
+
+                b1 = vertexData[cornerB] - vertexData[cornerA];
+                b2 = vertexData[cornerC] - vertexData[cornerA];
+
+                normal = Vector3.Cross(b1, b2).Normalize();
+
+                normalData[cornerA] += normal;
+                normalData[cornerB] += normal;
+                normalData[cornerC] += normal;
+            }
+
+            for (int i = 0; i < normalData.Length; i++) normalData[i] = normalData[i].Normalize();
+
+            return normalData;
         }
 
         public void Draw()
