@@ -21,6 +21,8 @@ namespace OpenGLTutorial2
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
 
+            Glut.glutCloseFunc(OnClose);
+
             program = new ShaderProgram(VertexShader, FragmentShader);
 
             program.Use();
@@ -34,6 +36,16 @@ namespace OpenGLTutorial2
             squareElements = new VBO<int>(new int[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
 
             Glut.glutMainLoop();
+        }
+
+        private static void OnClose()
+        {
+            triangle.Dispose();
+            triangleElements.Dispose();
+            square.Dispose();
+            squareElements.Dispose();
+            program.DisposeChildren = true;
+            program.Dispose();
         }
 
         private static void OnDisplay()

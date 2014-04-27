@@ -24,6 +24,8 @@ namespace OpenGLTutorial4
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
 
+            Glut.glutCloseFunc(OnClose);
+
             program = new ShaderProgram(VertexShader, FragmentShader);
 
             program.Use();
@@ -42,6 +44,18 @@ namespace OpenGLTutorial4
             watch = System.Diagnostics.Stopwatch.StartNew();
 
             Glut.glutMainLoop();
+        }
+
+        private static void OnClose()
+        {
+            triangle.Dispose();
+            triangleColor.Dispose();
+            triangleElements.Dispose();
+            square.Dispose();
+            squareColor.Dispose();
+            squareElements.Dispose();
+            program.DisposeChildren = true;
+            program.Dispose();
         }
 
         private static void OnDisplay()
