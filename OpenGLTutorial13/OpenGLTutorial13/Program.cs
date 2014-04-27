@@ -127,8 +127,8 @@ namespace OpenGLTutorial12
                 Vector3 v3 = vertices[triangles[i * 3 + 2]];
 
                 Vector2 w1 = uvs[triangles[i * 3]];
-                Vector2 w2 = uvs[triangles[i * 3] + 1];
-                Vector2 w3 = uvs[triangles[i * 3] + 2];
+                Vector2 w2 = uvs[triangles[i * 3 + 1]];
+                Vector2 w3 = uvs[triangles[i * 3 + 2]];
 
                 float x1 = v2.x - v1.x;
                 float x2 = v3.x - v1.x;
