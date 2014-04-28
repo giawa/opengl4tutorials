@@ -10,11 +10,13 @@ namespace OpenGLTutorial1
 
         static void Main(string[] args)
         {
+            // create an OpenGL window
             Glut.glutInit();
             Glut.glutInitDisplayMode(Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
             Glut.glutInitWindowSize(width, height);
             Glut.glutCreateWindow("OpenGL Tutorial");
 
+            // provide the Glut callbacks that are necessary for running this tutorial
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
 
@@ -28,6 +30,7 @@ namespace OpenGLTutorial1
 
         private static void OnRenderFrame()
         {
+            // set up the OpenGL viewport and clear both the color and depth bits
             Gl.Viewport(0, 0, width, height);
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
