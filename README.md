@@ -34,15 +34,23 @@ Each tutorial includes a .sln and .csproj file which will create an OpenGL progr
 ![Tutorial 4](https://giawa.github.com/tutorials/tutorial4.jpg)
 
 ### Tutorial 5:  Rendering 3D Shapes
+[Tutorial 5 on YouTube](https://www.youtube.com/watch?v=VypOTwI_0w0)
+
 ![Tutorial 5](https://giawa.github.com/tutorials/tutorial5.jpg)
 
 ### Tutorial 6:  Texture Mapping
+[Tutorial 6 on YouTube](https://www.youtube.com/watch?v=S1xoLVViv3E)
+
 ![Tutorial 6](https://giawa.github.com/tutorials/tutorial6.jpg)
 
 ### Tutorial 7:  Lighting, Keyboard Control and Fullscreen
+[Tutorial 7 on YouTube](https://www.youtube.com/watch?v=PPHNwhEXDQU)
+
 ![Tutorial 7](https://giawa.github.com/tutorials/tutorial7.jpg)
 
 ### Tutorial 8:  Alpha Blending
+[Tutorial 8 on YouTube](https://www.youtube.com/watch?v=YR5ZIuwgXlM)
+
 ![Tutorial 8](https://giawa.github.com/tutorials/tutorial8.jpg)
 
 ### Tutorial 9:  Billboards and Particles
