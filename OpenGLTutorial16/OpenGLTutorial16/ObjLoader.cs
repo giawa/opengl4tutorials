@@ -330,17 +330,6 @@ namespace OpenGLTutorial16
             int[] elementData = triangleList.ToArray();
             Vector3[] normalData = CalculateNormals(vertexData, elementData);
 
-            /*for (int i = 0; i < triangleList.Count; i++)
-            {
-                normalData[triangleList[i]] = normalData[normalsList[i]];
-            }*/
-
-            /*for (int i = 0; i < normalData.Length; i++)
-            {
-                if (normalData[i] == Vector3.Zero) 
-                    Console.WriteLine("What's up!?!?!");
-            }*/
-
             // now convert the lists over to vertex buffer objects to be rendered by OpenGL
             this.vertices = new VBO<Vector3>(vertexData);
             this.normals = new VBO<Vector3>(normalData);
