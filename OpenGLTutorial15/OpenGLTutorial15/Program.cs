@@ -183,39 +183,52 @@ namespace OpenGLTutorial15
 
         private static bool mouseDown = false;
         private static int downX, downY;
+        private static int prevX, prevY;
 
         private static void OnMouse(int button, int state, int x, int y)
         {
+            if (button != Glut.GLUT_RIGHT_BUTTON) return;
+
             // this method gets called whenever a new mouse button event happens
-            if (button == Glut.GLUT_RIGHT_BUTTON) mouseDown = (state == Glut.GLUT_DOWN);
+            mouseDown = (state == Glut.GLUT_DOWN);
 
             // if the mouse has just been clicked then we hide the cursor and store the position
             if (mouseDown)
             {
                 Glut.glutSetCursor(Glut.GLUT_CURSOR_NONE);
-                downX = x;
-                downY = y;
+                prevX = downX = x;
+                prevY = downY = y;
             }
             else // unhide the cursor if the mouse has just been released
+            {
                 Glut.glutSetCursor(Glut.GLUT_CURSOR_LEFT_ARROW);
+                Glut.glutWarpPointer(downX, downY);
+            }
         }
 
         private static void OnMove(int x, int y)
         {
             // if the mouse move event is caused by glutWarpPointer then do nothing
-            if (x == downX && y == downY) return;
+            if (x == prevX && y == prevY) return;
 
             // move the camera when the mouse is down
             if (mouseDown)
             {
-                float yaw = (downX - x) * 0.002f;
+                float yaw = (prevX - x) * 0.002f;
                 camera.Yaw(yaw);
 
-                float pitch = (downY - y) * 0.002f;
+                float pitch = (prevY - y) * 0.002f;
                 camera.Pitch(pitch);
 
-                Glut.glutWarpPointer(downX, downY);
+                prevX = x;
+                prevY = y;
             }
+
+            if (x < 0) Glut.glutWarpPointer(prevX = width, y);
+            else if (x > width) Glut.glutWarpPointer(prevX = 0, y);
+
+            if (y < 0) Glut.glutWarpPointer(x, prevY = height);
+            else if (y > height) Glut.glutWarpPointer(x, prevY = 0);
         }
 
         private static void OnRenderFrame()
