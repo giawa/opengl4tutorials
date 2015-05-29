@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 using OpenGL;
 
@@ -15,6 +17,7 @@ namespace OpenGLTutorial16
 
         public ObjLoader(string filename, ShaderProgram program)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             this.defaultProgram = program;
 
             System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
@@ -79,7 +82,7 @@ namespace OpenGLTutorial16
                         if (!materials.ContainsKey(material.Name)) materials.Add(material.Name, material);
                         lines.Clear();
                     }
-                    
+
                     if (line[0] == 'm')
                     {
                         // try to fix up filenames of texture maps
@@ -188,7 +191,7 @@ namespace OpenGLTutorial16
                         break;
                     case "illum": this.Illumination = (IlluminationMode)int.Parse(split[1]);
                         break;
-                    case "map_Kd": if (File.Exists(split[1])) this.DiffuseMap = new Texture(split[1]);
+                    case "map_Kd": if (File.Exists(lines[i].Split(new char[] { ' ' }, 2)[1])) this.DiffuseMap = new Texture(lines[i].Split(new char[] { ' ' }, 2)[1]);
                         break;
                 }
             }
@@ -264,60 +267,15 @@ namespace OpenGLTutorial16
                         uvList.Add(new Vector2(double.Parse(split[1]), double.Parse(split[2])));
                         break;
                     case "f":
-                        string[] indices = new string[] { split[1], split[2], split[3] };
-
-                        if (split[1].Contains("/"))
+                        if (split.Length == 5)  // this is a quad, so split it up
                         {
-                            indices[0] = split[1].Substring(0, split[1].IndexOf("/"));
-                            indices[1] = split[2].Substring(0, split[2].IndexOf("/"));
-                            indices[2] = split[3].Substring(0, split[3].IndexOf("/"));
+                            string[] split1 = new string[] { split[0], split[1], split[2], split[3] };
+                            UnpackFace(split1, vertexOffset, uvOffset, vertexList, uvList, triangleList, unpackedUvs, normalsList);
 
-                            string[] uvs = new string[3];
-                            uvs[0] = split[1].Substring(split[1].IndexOf("/") + 1);
-                            uvs[1] = split[2].Substring(split[2].IndexOf("/") + 1);
-                            uvs[2] = split[3].Substring(split[3].IndexOf("/") + 1);
-
-                            int[] triangle = new int[] { int.Parse(indices[0]) - vertexOffset, int.Parse(indices[1]) - vertexOffset, int.Parse(indices[2]) - vertexOffset };
-
-                            if (unpackedUvs.Count == 0) for (int j = 0; j < vertexList.Count; j++) unpackedUvs.Add(Vector2.Zero);
-                            normalsList.Add(triangle[0]);
-                            normalsList.Add(triangle[1]);
-                            normalsList.Add(triangle[2]);
-
-                            if (unpackedUvs[triangle[0]] == Vector2.Zero) unpackedUvs[triangle[0]] = uvList[int.Parse(uvs[0]) - uvOffset];
-                            else
-                            {
-                                unpackedUvs.Add(uvList[int.Parse(uvs[0]) - uvOffset]);
-                                vertexList.Add(vertexList[triangle[0]]);
-                                triangle[0] = unpackedUvs.Count - 1;
-                            }
-
-                            if (unpackedUvs[triangle[1]] == Vector2.Zero) unpackedUvs[triangle[1]] = uvList[int.Parse(uvs[1]) - uvOffset];
-                            else
-                            {
-                                unpackedUvs.Add(uvList[int.Parse(uvs[1]) - uvOffset]);
-                                vertexList.Add(vertexList[triangle[1]]);
-                                triangle[1] = unpackedUvs.Count - 1;
-                            }
-
-                            if (unpackedUvs[triangle[2]] == Vector2.Zero) unpackedUvs[triangle[2]] = uvList[int.Parse(uvs[2]) - uvOffset];
-                            else
-                            {
-                                unpackedUvs.Add(uvList[int.Parse(uvs[2]) - uvOffset]);
-                                vertexList.Add(vertexList[triangle[2]]);
-                                triangle[2] = unpackedUvs.Count - 1;
-                            }
-
-                            triangleList.Add(triangle[0]);
-                            triangleList.Add(triangle[1]);
-                            triangleList.Add(triangle[2]);
+                            string[] split2 = new string[] { split[0], split[1], split[3], split[4] };
+                            UnpackFace(split2, vertexOffset, uvOffset, vertexList, uvList, triangleList, unpackedUvs, normalsList);
                         }
-                        else
-                        {
-                            triangleList.Add(int.Parse(indices[0]) - vertexOffset);
-                            triangleList.Add(int.Parse(indices[1]) - vertexOffset);
-                            triangleList.Add(int.Parse(indices[2]) - vertexOffset);
-                        }
+                        else UnpackFace(split, vertexOffset, uvOffset, vertexList, uvList, triangleList, unpackedUvs, normalsList);
                         break;
                     case "usemtl":
                         if (materials.ContainsKey(split[1])) Material = materials[split[1]];
@@ -335,6 +293,64 @@ namespace OpenGLTutorial16
             this.normals = new VBO<Vector3>(normalData);
             if (unpackedUvs.Count != 0) this.uvs = new VBO<Vector2>(unpackedUvs.ToArray());
             this.triangles = new VBO<int>(elementData, BufferTarget.ElementArrayBuffer);
+        }
+
+        private void UnpackFace(string[] split, int vertexOffset, int uvOffset, List<Vector3> vertexList, List<Vector2> uvList, List<int> triangleList, List<Vector2> unpackedUvs, List<int> normalsList)
+        {
+            string[] indices = new string[] { split[1], split[2], split[3] };
+
+            if (split[1].Contains("/"))
+            {
+                indices[0] = split[1].Substring(0, split[1].IndexOf("/"));
+                indices[1] = split[2].Substring(0, split[2].IndexOf("/"));
+                indices[2] = split[3].Substring(0, split[3].IndexOf("/"));
+
+                string[] uvs = new string[3];
+                uvs[0] = split[1].Substring(split[1].IndexOf("/") + 1);
+                uvs[1] = split[2].Substring(split[2].IndexOf("/") + 1);
+                uvs[2] = split[3].Substring(split[3].IndexOf("/") + 1);
+
+                int[] triangle = new int[] { int.Parse(indices[0]) - vertexOffset, int.Parse(indices[1]) - vertexOffset, int.Parse(indices[2]) - vertexOffset };
+
+                if (unpackedUvs.Count == 0) for (int j = 0; j < vertexList.Count; j++) unpackedUvs.Add(Vector2.Zero);
+                normalsList.Add(triangle[0]);
+                normalsList.Add(triangle[1]);
+                normalsList.Add(triangle[2]);
+
+                if (unpackedUvs[triangle[0]] == Vector2.Zero) unpackedUvs[triangle[0]] = uvList[int.Parse(uvs[0]) - uvOffset];
+                else
+                {
+                    unpackedUvs.Add(uvList[int.Parse(uvs[0]) - uvOffset]);
+                    vertexList.Add(vertexList[triangle[0]]);
+                    triangle[0] = unpackedUvs.Count - 1;
+                }
+
+                if (unpackedUvs[triangle[1]] == Vector2.Zero) unpackedUvs[triangle[1]] = uvList[int.Parse(uvs[1]) - uvOffset];
+                else
+                {
+                    unpackedUvs.Add(uvList[int.Parse(uvs[1]) - uvOffset]);
+                    vertexList.Add(vertexList[triangle[1]]);
+                    triangle[1] = unpackedUvs.Count - 1;
+                }
+
+                if (unpackedUvs[triangle[2]] == Vector2.Zero) unpackedUvs[triangle[2]] = uvList[int.Parse(uvs[2]) - uvOffset];
+                else
+                {
+                    unpackedUvs.Add(uvList[int.Parse(uvs[2]) - uvOffset]);
+                    vertexList.Add(vertexList[triangle[2]]);
+                    triangle[2] = unpackedUvs.Count - 1;
+                }
+
+                triangleList.Add(triangle[0]);
+                triangleList.Add(triangle[1]);
+                triangleList.Add(triangle[2]);
+            }
+            else
+            {
+                triangleList.Add(int.Parse(indices[0]) - vertexOffset);
+                triangleList.Add(int.Parse(indices[1]) - vertexOffset);
+                triangleList.Add(int.Parse(indices[2]) - vertexOffset);
+            }
         }
 
         public static Vector3[] CalculateNormals(Vector3[] vertexData, int[] elementData)
