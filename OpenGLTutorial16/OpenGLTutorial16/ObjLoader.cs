@@ -38,7 +38,7 @@ namespace OpenGLTutorial16
                     if ((line[0] == 'o' || line[0] == 'g') && lines.Count != 0)
                     {
                         ObjObject newObject = new ObjObject(lines, materials, vertexOffset, uvOffset);
-                        objects.Add(newObject);
+                        if (vertexCount != 0) objects.Add(newObject);
 
                         if (newObject.Material == null) newObject.Material = defaultMaterial;
 
@@ -58,6 +58,9 @@ namespace OpenGLTutorial16
                     // check if a material file is being used
                     if (line[0] == 'm' && line[1] == 't') LoadMaterials(CreateFixedPath(filename, line.Split(' ')[1]));
                 }
+
+                // make sure we grab any remaining objects that occured before the EOF
+                if (lines != null) objects.Add(new ObjObject(lines, materials, vertexOffset, uvOffset));
             }
 
             watch.Stop();
