@@ -94,9 +94,6 @@ namespace OpenGLTutorial12
             Vector3[] tangents = CalculateTangents(vertices, normals, triangles.ToArray(), uvs);
             cubeTangents = new VBO<Vector3>(tangents);
 
-            //cubeTriangles = new VBO<int>(new int[] { 0, 1, 2, 0, 3, 2, 4, 5, 6, 4, 7, 6,  }, BufferTarget.ElementArrayBuffer);
-            //cubeTriangles = new VBO<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }, BufferTarget.ElementArrayBuffer);
-
             // load the bitmap font for this tutorial
             font = new BMFont("font24.fnt", "font24.png");
             fontProgram = new ShaderProgram(BMFont.FontVertexSource, BMFont.FontFragmentSource);
