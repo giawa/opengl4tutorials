@@ -29,6 +29,8 @@ namespace OpenGLTutorial16
             Glut.glutCreateWindow("OpenGL Tutorial");
 
             Gl.Enable(EnableCap.DepthTest);
+            Gl.Enable(EnableCap.Blend);
+            Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
@@ -42,9 +44,6 @@ namespace OpenGLTutorial16
             // add our mouse callbacks for this tutorial
             Glut.glutMouseFunc(OnMouse);
             Glut.glutMotionFunc(OnMove);
-
-            Gl.Enable(EnableCap.Blend);
-            Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             // create our shader program
             program = new ShaderProgram(VertexShader, FragmentShader);

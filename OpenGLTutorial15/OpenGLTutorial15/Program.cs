@@ -45,6 +45,8 @@ namespace OpenGLTutorial15
             Glut.glutMotionFunc(OnMove);
 
             Gl.Enable(EnableCap.DepthTest);
+            Gl.Enable(EnableCap.Blend);
+            Gl.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             // create our shader program
             program = new ShaderProgram(VertexShader, FragmentShader);

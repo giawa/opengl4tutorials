@@ -72,6 +72,9 @@ namespace OpenGLTutorial11
                     triangles.Add(x * 40 + y);
                     triangles.Add((x + 1) * 40 + y);
                     triangles.Add((x + 1) * 40 + y + 1);
+
+                    triangles.Add(x * 40 + y);
+                    triangles.Add((x + 1) * 40 + y + 1);
                     triangles.Add(x * 40 + y + 1);
                 }
             }
@@ -147,7 +150,7 @@ namespace OpenGLTutorial11
             Gl.BindBufferToShaderAttribute(flagUVs, program, "vertexUV");
             Gl.BindBuffer(flagTriangles);
 
-            Gl.DrawElements(BeginMode.Quads, flagTriangles.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            Gl.DrawElements(BeginMode.Triangles, flagTriangles.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
             // bind the font program as well as the font texture
             Gl.UseProgram(fontProgram.ProgramID);
