@@ -69,7 +69,7 @@ namespace OpenGLTutorial9
             // each star is simply a quad
             star = new VBO<Vector3>(new Vector3[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(1, 1, 0), new Vector3(-1, 1, 0) });
             starUV = new VBO<Vector2>(new Vector2[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) });
-            starQuads = new VBO<int>(new int[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
+            starQuads = new VBO<int>(new int[] { 0, 1, 2, 0, 2, 3 }, BufferTarget.ElementArrayBuffer);
 
             // create 50 stars for this tutorial
             int numStars = 50;
@@ -135,7 +135,7 @@ namespace OpenGLTutorial9
                 Gl.BindBufferToShaderAttribute(starUV, program, "vertexUV");
                 Gl.BindBuffer(starQuads);
 
-                Gl.DrawElements(BeginMode.Quads, starQuads.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+                Gl.DrawElements(BeginMode.Triangles, starQuads.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
                 // update the position of the star
                 stars[i].angle += (float)i / stars.Count * deltaTime * 2;
@@ -205,7 +205,6 @@ void main(void)
     uv = vertexUV;
 
     gl_Position = projection_matrix * (view_matrix * model_matrix * vec4(0, 0, 0, 1) + vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z, 0));
-    //gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertexPosition, 1);
 }
 ";
 
