@@ -26,6 +26,7 @@ namespace OpenGLTutorial16
             using (StreamReader stream = new StreamReader(filename))
             {
                 List<string> lines = new List<string>();
+                List<string> objLines = new List<string>();
                 int vertexOffset = 1, vertexCount = 0;
                 int uvOffset = 1, uvCount = 0;
 
@@ -35,32 +36,49 @@ namespace OpenGLTutorial16
                     string line = stream.ReadLine();
                     if (line.Trim().Length == 0) continue;
 
-                    if ((line[0] == 'o' || line[0] == 'g') && lines.Count != 0)
+                    if ((line[0] == 'o' && lines.Count != 0) || (line[0] == 'g' && objLines.Count != 0))
                     {
-                        ObjObject newObject = new ObjObject(lines, materials, vertexOffset, uvOffset);
-                        if (vertexCount != 0) objects.Add(newObject);
+                        List<string> combinedLines = new List<string>(objLines);
+                        combinedLines.AddRange(lines);
+
+                        ObjObject newObject = new ObjObject(combinedLines, materials, vertexOffset, uvOffset);
+                        if (newObject.VertexCount != 0) objects.Add(newObject);
 
                         if (newObject.Material == null) newObject.Material = defaultMaterial;
 
                         lines.Clear();
-                        vertexOffset += vertexCount;
-                        uvOffset += uvCount;
-                        vertexCount = 0;
-                        uvCount = 0;
+                        if (line[0] == 'o')
+                        {
+                            objLines.Clear();
+                            vertexOffset += vertexCount;
+                            uvOffset += uvCount;
+                            vertexCount = 0;
+                            uvCount = 0;
+                        }
                     }
-                    if (line[0] != '#') lines.Add(line);
+                    
                     if (line[0] == 'v')
                     {
                         if (line[1] == ' ') vertexCount++;
                         else uvCount++;
+
+                        objLines.Add(line);
                     }
+                    else if (line[0] != '#') lines.Add(line);
 
                     // check if a material file is being used
                     if (line[0] == 'm' && line[1] == 't') LoadMaterials(CreateFixedPath(filename, line.Split(' ')[1]));
                 }
 
                 // make sure we grab any remaining objects that occured before the EOF
-                if (lines != null) objects.Add(new ObjObject(lines, materials, vertexOffset, uvOffset));
+                if (lines != null)
+                {
+                    List<string> combinedLines = new List<string>(objLines);
+                    combinedLines.AddRange(lines);
+
+                    ObjObject newObject = new ObjObject(combinedLines, materials, vertexOffset, uvOffset);
+                    objects.Add(newObject);
+                }
             }
 
             watch.Stop();
@@ -241,14 +259,15 @@ namespace OpenGLTutorial16
 
         public ObjMaterial Material { get; set; }
 
+        public int VertexCount
+        {
+            get { return triangles.Count * 3; }
+        }
+
         public ObjObject(List<string> lines, Dictionary<string, ObjMaterial> materials, int vertexOffset, int uvOffset)
         {
             // we need at least 1 line to be a valid file
             if (lines.Count == 0) return;
-
-            // the first line should contain 'o'
-            if (lines[0][0] != 'o' && lines[0][0] != 'g') return;
-            this.Name = lines[0].Substring(2);
 
             List<Vector3> vertexList = new List<Vector3>();
             List<Vector2> uvList = new List<Vector2>();
@@ -257,14 +276,18 @@ namespace OpenGLTutorial16
             List<int> normalsList = new List<int>();
 
             // now we read the lines
-            for (int i = 1; i < lines.Count; i++)
+            for (int i = 0; i < lines.Count; i++)
             {
                 string[] split = lines[i].Split(' ');
 
                 switch (split[0])
                 {
+                    case "o":
+                    case "g":
+                        this.Name = lines[i].Substring(2);
+                        break;
                     case "v":
-                        vertexList.Add(new Vector3(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])) * 0.025f);
+                        vertexList.Add(new Vector3(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])));
                         break;
                     case "vt":
                         uvList.Add(new Vector2(double.Parse(split[1]), double.Parse(split[2])));
@@ -314,11 +337,18 @@ namespace OpenGLTutorial16
                 uvs[2] = split[3].Substring(split[3].IndexOf("/") + 1);
 
                 int[] triangle = new int[] { int.Parse(indices[0]) - vertexOffset, int.Parse(indices[1]) - vertexOffset, int.Parse(indices[2]) - vertexOffset };
-
                 if (unpackedUvs.Count == 0) for (int j = 0; j < vertexList.Count; j++) unpackedUvs.Add(Vector2.Zero);
-                normalsList.Add(triangle[0]);
-                normalsList.Add(triangle[1]);
-                normalsList.Add(triangle[2]);
+
+                if (uvs[0].Contains("/"))
+                {
+                    for (int i = 0; i < uvs.Length; i++) uvs[i] = uvs[i].Substring(0, uvs[i].IndexOf("/"));
+                }
+                else
+                {
+                    normalsList.Add(triangle[0]);
+                    normalsList.Add(triangle[1]);
+                    normalsList.Add(triangle[2]);
+                }
 
                 if (unpackedUvs[triangle[0]] == Vector2.Zero) unpackedUvs[triangle[0]] = uvList[int.Parse(uvs[0]) - uvOffset];
                 else
