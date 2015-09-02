@@ -112,6 +112,14 @@ namespace OpenGLTutorial16
                     }
                     else if (line[0] != '#') lines.Add(line);    // ignore comments
                 }
+
+                // If the obj has just one material would not execute the ObjMaterial function up, so I added (if the there are lines still not processed, process them)
+                if (lines.Count != 0)
+                {
+                    ObjMaterial materialEnd = new ObjMaterial(lines, defaultProgram);
+                    if (!materials.ContainsKey(materialEnd.Name)) materials.Add(materialEnd.Name, materialEnd);
+                    lines.Clear();
+                }
             }
         }
 
@@ -197,6 +205,12 @@ namespace OpenGLTutorial16
             for (int i = 1; i < lines.Count; i++)
             {
                 string[] split = lines[i].Split(' ');
+
+                // Some object exporters export the material with a tab character in front, so I am removing it
+                if (split[0].Contains("\t"))
+                {
+                    split[0] = split[0].Replace("\t", string.Empty);
+                }
 
                 switch (split[0])
                 {
