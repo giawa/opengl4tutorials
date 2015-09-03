@@ -268,6 +268,7 @@ namespace OpenGLTutorial16
         private VBO<Vector3> normals;
         private VBO<Vector2> uvs;
         private VBO<int> triangles;
+        private bool isMax2013 = true; // At default is true because you need to run the function to see is it?
 
         public string Name { get; private set; }
 
@@ -301,12 +302,14 @@ namespace OpenGLTutorial16
                         this.Name = lines[i].Substring(2);
                         break;
                     case "v":
+                        if (isMax2013) split = TestingNull(split); // If the boolen is true call the function
                         vertexList.Add(new Vector3(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])));
                         break;
                     case "vt":
                         uvList.Add(new Vector2(double.Parse(split[1]), double.Parse(split[2])));
                         break;
                     case "f":
+                        if (isMax2013) split = TestingNull(split); // If the boolen is true call the function
                         if (split.Length == 5)  // this is a quad, so split it up
                         {
                             string[] split1 = new string[] { split[0], split[1], split[2], split[3] };
@@ -333,6 +336,43 @@ namespace OpenGLTutorial16
             this.normals = new VBO<Vector3>(normalData);
             if (unpackedUvs.Count != 0) this.uvs = new VBO<Vector2>(unpackedUvs.ToArray());
             this.triangles = new VBO<int>(elementData, BufferTarget.ElementArrayBuffer);
+        }
+
+        private string[] TestingNull(string[] split)
+        {
+            // 3Ds Max Design 2013 exports the .obj file with additional not needed spaces that creates empty strings
+            // So I am removing the empty strings by shifting the others
+            // If there is a error it will return the oldSplit string array
+            string[] oldSplit = split;
+            try
+            {
+                if (split[1] == string.Empty)
+                {
+                    split[1] = split[2];
+                    split[2] = split[3];
+                    split[3] = split[4];
+                }
+                else if (split[2] == string.Empty)
+                {
+                    split[2] = split[3];
+                    split[3] = split[4];
+                }
+                else if (split[3] == string.Empty) split[3] = split[4];
+                else if (split.Length == 5)
+                {
+                    if (split[4] == string.Empty)
+                    {
+                        string[] splitDone = { split[0], split[1], split[2], split[3] };
+                        return splitDone;
+                    }
+                }
+                else isMax2013 = false;
+            }
+            catch
+            {
+                return oldSplit;
+            }
+            return split;
         }
 
         private void UnpackFace(string[] split, int vertexOffset, int uvOffset, List<Vector3> vertexList, List<Vector2> uvList, List<int> triangleList, List<Vector2> unpackedUvs, List<int> normalsList)
