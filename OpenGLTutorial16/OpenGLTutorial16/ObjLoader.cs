@@ -204,7 +204,7 @@ namespace OpenGLTutorial16
 
             for (int i = 1; i < lines.Count; i++)
             {
-                string[] split = lines[i].Split(' ');
+                string[] split = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 // Some object exporters export the material with a tab character in front, so I am removing it
                 if (split[0].Contains("\t"))
@@ -292,7 +292,7 @@ namespace OpenGLTutorial16
             // now we read the lines
             for (int i = 0; i < lines.Count; i++)
             {
-                string[] split = lines[i].Split(' ');
+                string[] split = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 switch (split[0])
                 {
