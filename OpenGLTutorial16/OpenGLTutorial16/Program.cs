@@ -155,7 +155,7 @@ namespace OpenGLTutorial16
             if (up) camera.MoveRelative(-Vector3.UnitZ * deltaTime * 5);
             if (left) camera.MoveRelative(-Vector3.UnitX * deltaTime * 5);
             if (right) camera.MoveRelative(Vector3.UnitX * deltaTime * 5);
-            if (space) camera.MoveRelative(Vector3.Up * deltaTime * 3);
+            if (space) camera.MoveRelative(Vector3.UnitY * deltaTime * 3);
 
             // set up the viewport and clear the previous depth and color buffers
             Gl.Viewport(0, 0, width, height);

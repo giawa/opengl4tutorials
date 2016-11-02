@@ -51,7 +51,7 @@ namespace OpenGLTutorial14
             // set up the projection and view matrix
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 10), Vector3.Zero, new Vector3(0, 1, 0)));
 
             program["light_direction"].SetValue(new Vector3(0, 0, 1));
             program["enable_lighting"].SetValue(lighting);
@@ -130,17 +130,17 @@ namespace OpenGLTutorial14
                 Vector2 w2 = uvs[triangles[i * 3] + 1];
                 Vector2 w3 = uvs[triangles[i * 3] + 2];
 
-                float x1 = v2.x - v1.x;
-                float x2 = v3.x - v1.x;
-                float y1 = v2.y - v1.y;
-                float y2 = v3.y - v1.y;
-                float z1 = v2.z - v1.z;
-                float z2 = v3.z - v1.z;
+                float x1 = v2.X - v1.X;
+                float x2 = v3.X - v1.X;
+                float y1 = v2.Y - v1.Y;
+                float y2 = v3.Y - v1.Y;
+                float z1 = v2.Z - v1.Z;
+                float z2 = v3.Z - v1.Z;
 
-                float s1 = w2.x - w1.x;
-                float s2 = w3.x - w1.x;
-                float t1 = w2.y - w1.y;
-                float t2 = w3.y - w1.y;
+                float s1 = w2.X - w1.X;
+                float s2 = w3.X - w1.X;
+                float t1 = w2.Y - w1.Y;
+                float t2 = w3.Y - w1.Y;
                 float r = 1.0f / (s1 * t2 - s2 * t1);
                 Vector3 sdir = new Vector3((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
 

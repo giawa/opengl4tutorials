@@ -54,7 +54,7 @@ namespace OpenGLTutorial12
             // set up the projection and view matrix
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, Vector3.Up));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, new Vector3(0, 1, 0)));
             program["model_matrix"].SetValue(Matrix4.Identity);
             program["static_colors"].SetValue(false);
 
@@ -68,7 +68,7 @@ namespace OpenGLTutorial12
 
             // set up the particleColors, which we'll just keep static
             Vector3[] colors = new Vector3[particleCount];
-            for (int i = 0; i < colors.Length; i++) colors[i] = new Vector3(generator.NextDouble(), generator.NextDouble(), generator.NextDouble());
+            for (int i = 0; i < colors.Length; i++) colors[i] = new Vector3((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble());
             particleColors = new VBO<Vector3>(colors);
 
             // build up our first batch of 1000 particles and 1000 static colors
@@ -116,7 +116,7 @@ namespace OpenGLTutorial12
             public Particle(Vector3 origin, float life = 2)
             {
                 Position = origin;
-                Direction = new Vector3(generator.NextDouble() * 2 - 1, 3 + generator.NextDouble(), generator.NextDouble() * 2 - 1);
+                Direction = new Vector3((float)generator.NextDouble() * 2 - 1, 3 + (float)generator.NextDouble(), (float)generator.NextDouble() * 2 - 1);
                 Life = life + (float)generator.NextDouble() * 2;
             }
 

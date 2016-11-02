@@ -77,7 +77,7 @@ namespace OpenGLTutorial15
             if (direction == Vector3.Zero) return;
 
             Vector3 zvec = -direction.Normalize();
-            Vector3 xvec = Vector3.Up.Cross(zvec).Normalize();
+            Vector3 xvec = Vector3.UnitY.Cross(zvec).Normalize();
             Vector3 yvec = zvec.Cross(xvec).Normalize();
             Orientation = Quaternion.FromAxis(xvec, yvec, zvec);
         }
@@ -139,7 +139,7 @@ namespace OpenGLTutorial15
             // this method assumes that the y direction will always be 'up', so we've fixed the yaw
             // which is more useful for FPS games, etc.  For flight simulators, or other applications
             // of an unfixed yaw, simply replace Vector3.Up with (orientation * Vector3.UnitY)
-            Rotate(angle, Vector3.Up);
+            Rotate(angle, Vector3.UnitY);
         }
 
         /// <summary>

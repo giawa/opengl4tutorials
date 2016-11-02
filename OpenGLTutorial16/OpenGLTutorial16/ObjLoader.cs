@@ -190,8 +190,8 @@ namespace OpenGLTutorial16
         {
             this.Name = "opengl-default-project";
             this.Transparency = 1f;
-            this.Ambient = Vector3.UnitScale;
-            this.Diffuse = Vector3.UnitScale;
+            this.Ambient = Vector3.One;
+            this.Diffuse = Vector3.One;
             this.Program = program;
         }
 
@@ -301,10 +301,10 @@ namespace OpenGLTutorial16
                         this.Name = lines[i].Substring(2);
                         break;
                     case "v":
-                        vertexList.Add(new Vector3(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])));
+                        vertexList.Add(new Vector3(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])));
                         break;
                     case "vt":
-                        uvList.Add(new Vector2(double.Parse(split[1]), double.Parse(split[2])));
+                        uvList.Add(new Vector2(float.Parse(split[1]), float.Parse(split[2])));
                         break;
                     case "f":
                         if (split.Length == 5)  // this is a quad, so split it up

@@ -61,7 +61,7 @@ namespace OpenGLTutorial9
             // set up the projection and view matrix
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, Vector3.Up));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, new Vector3(0, 1, 0)));
 
             // load the star texture
             starTexture = new Texture("star.bmp");
@@ -75,7 +75,7 @@ namespace OpenGLTutorial9
             int numStars = 50;
             for (int i = 0; i < numStars; i++)
             {
-                stars.Add(new Star(0, (float)i / numStars * 4f, new Vector3(generator.NextDouble(), generator.NextDouble(), generator.NextDouble())));
+                stars.Add(new Star(0, (float)i / numStars * 4f, new Vector3((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble())));
             }
 
             watch = System.Diagnostics.Stopwatch.StartNew();
@@ -120,8 +120,8 @@ namespace OpenGLTutorial9
             Gl.BindTexture(starTexture);
 
             // calculate the camera position using some fancy polar co-ordinates
-            Vector3 position = 20 * new Vector3(Math.Cos(phi) * Math.Sin(theta), Math.Cos(theta), Math.Sin(phi) * Math.Sin(theta));
-            Vector3 upVector = ((theta % (Math.PI * 2)) > Math.PI) ? Vector3.Up : Vector3.Down;
+            Vector3 position = 20 * new Vector3((float)(Math.Cos(phi) * Math.Sin(theta)), (float)Math.Cos(theta), (float)(Math.Sin(phi) * Math.Sin(theta)));
+            Vector3 upVector = ((theta % (Math.PI * 2)) > Math.PI) ? new Vector3(0, 1, 0) : new Vector3(0, -1, 0);
             program["view_matrix"].SetValue(Matrix4.LookAt(position, Vector3.Zero, upVector));
 
             // loop through the stars, drawing each one
@@ -145,7 +145,7 @@ namespace OpenGLTutorial9
                 if (stars[i].dist < 0f)
                 {
                     stars[i].dist += 5f;
-                    stars[i].color = new Vector3(generator.NextDouble(), generator.NextDouble(), generator.NextDouble());
+                    stars[i].color = new Vector3((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble());
                 }
             }
 

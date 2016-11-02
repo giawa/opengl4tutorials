@@ -50,7 +50,7 @@ namespace OpenGLTutorial11
             // set up the projection and view matrix
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, Vector3.Up));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 20), Vector3.Zero, new Vector3(0, 1, 0)));
             program["model_matrix"].SetValue(Matrix4.Identity);
 
             // load the flag texture
@@ -64,8 +64,8 @@ namespace OpenGLTutorial11
             {
                 for (int y = 0; y < 40; y++)
                 {
-                    vertices.Add(new Vector3((x - 20) / 5.0, (y - 20) / 10.0, 0));
-                    uvs.Add(new Vector2(x / 39.0, 1 - y / 39.0));
+                    vertices.Add(new Vector3((x - 20) / 5.0f, (y - 20) / 10.0f, 0));
+                    uvs.Add(new Vector2(x / 39.0f, 1 - y / 39.0f));
 
                     if (y == 39 || x == 39) continue;
 
@@ -139,8 +139,8 @@ namespace OpenGLTutorial11
             Gl.BindTexture(flagTexture);
 
             // calculate the camera position using some fancy polar co-ordinates
-            Vector3 position = 20 * new Vector3(Math.Cos(phi) * Math.Sin(theta), Math.Cos(theta), Math.Sin(phi) * Math.Sin(theta));
-            Vector3 upVector = ((theta % (Math.PI * 2)) > Math.PI) ? Vector3.Up : Vector3.Down;
+            Vector3 position = 20 * new Vector3((float)(Math.Cos(phi) * Math.Sin(theta)), (float)Math.Cos(theta), (float)(Math.Sin(phi) * Math.Sin(theta)));
+            Vector3 upVector = ((theta % (Math.PI * 2)) > Math.PI) ? new Vector3(0, 1, 0) : new Vector3(0, -1, 0);
             program["view_matrix"].SetValue(Matrix4.LookAt(position, Vector3.Zero, upVector));
 
             program["time"].SetValue(flagTime);

@@ -28,7 +28,7 @@ namespace OpenGLTutorial10
             if (vertices == null) return;
 
             program.Use();
-            program["model_matrix"].SetValue(Matrix4.CreateTranslation(new Vector3(Position.x, Position.y, 0)));
+            program["model_matrix"].SetValue(Matrix4.CreateTranslation(new Vector3(Position.X, Position.Y, 0)));
 
             Gl.BindBufferToShaderAttribute(vertices, program, "vertexPosition");
             Gl.BindBufferToShaderAttribute(uvs, program, "vertexUV");

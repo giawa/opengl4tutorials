@@ -41,7 +41,7 @@ namespace OpenGLTutorial8
 
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 10), Vector3.Zero, new Vector3(0, 1, 0)));
 
             program["light_direction"].SetValue(new Vector3(0, 0, 1));
             program["enable_lighting"].SetValue(lighting);
