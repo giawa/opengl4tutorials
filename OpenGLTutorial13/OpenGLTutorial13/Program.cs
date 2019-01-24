@@ -13,7 +13,7 @@ namespace OpenGLTutorial12
         private static ShaderProgram program;
         private static VBO<Vector3> cube, cubeNormals, cubeTangents;
         private static VBO<Vector2> cubeUV;
-        private static VBO<int> cubeTriangles;
+        private static VBO<uint> cubeTriangles;
         private static Texture brickDiffuse, brickNormals;
         private static float xangle, yangle;
         private static bool autoRotate, lighting = true, fullscreen = false, normalMapping = false;
@@ -76,8 +76,8 @@ namespace OpenGLTutorial12
                 new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
             cubeUV = new VBO<Vector2>(uvs);
 
-            List<int> triangles = new List<int>();
-            for (int i = 0; i < 6; i++)
+            List<uint> triangles = new List<uint>();
+            for (uint i = 0; i < 6; i++)
             {
                 triangles.Add(i * 4);
                 triangles.Add(i * 4 + 1);
@@ -86,7 +86,7 @@ namespace OpenGLTutorial12
                 triangles.Add(i * 4 + 2);
                 triangles.Add(i * 4 + 3);
             }
-            cubeTriangles = new VBO<int>(triangles.ToArray(), BufferTarget.ElementArrayBuffer);
+            cubeTriangles = new VBO<uint>(triangles.ToArray(), BufferTarget.ElementArrayBuffer);
 
             Vector3[] normals = Geometry.CalculateNormals(vertices, triangles.ToArray());
             cubeNormals = new VBO<Vector3>(normals);
@@ -112,7 +112,7 @@ namespace OpenGLTutorial12
         /// <summary>
         /// Calculate the Tangent array based on the Vertex, Face, Normal and UV data.
         /// </summary>
-        private static Vector3[] CalculateTangents(Vector3[] vertices, Vector3[] normals, int[] triangles, Vector2[] uvs)
+        private static Vector3[] CalculateTangents(Vector3[] vertices, Vector3[] normals, uint[] triangles, Vector2[] uvs)
         {
             Vector3[] tangents = new Vector3[vertices.Length];
             Vector3[] tangentData = new Vector3[vertices.Length];
@@ -156,6 +156,7 @@ namespace OpenGLTutorial12
         {
             cube.Dispose();
             cubeNormals.Dispose();
+            cubeTangents.Dispose();
             cubeUV.Dispose();
             cubeTriangles.Dispose();
             brickDiffuse.Dispose();

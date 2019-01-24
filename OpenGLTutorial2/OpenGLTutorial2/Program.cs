@@ -9,7 +9,7 @@ namespace OpenGLTutorial2
         private static int width = 1280, height = 720;
         private static ShaderProgram program;
         private static VBO<Vector3> triangle, square;
-        private static VBO<int> triangleElements, squareElements;
+        private static VBO<uint> triangleElements, squareElements;
 
         static void Main(string[] args)
         {
@@ -34,11 +34,11 @@ namespace OpenGLTutorial2
 
             // create a triangle
             triangle = new VBO<Vector3>(new Vector3[] { new Vector3(0, 1, 0), new Vector3(-1, -1, 0), new Vector3(1, -1, 0) });
-            triangleElements = new VBO<int>(new int[] { 0, 1, 2 }, BufferTarget.ElementArrayBuffer);
+            triangleElements = new VBO<uint>(new uint[] { 0, 1, 2 }, BufferTarget.ElementArrayBuffer);
 
             // create a square
             square = new VBO<Vector3>(new Vector3[] { new Vector3(-1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0) });
-            squareElements = new VBO<int>(new int[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
+            squareElements = new VBO<uint>(new uint[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
 
             Glut.glutMainLoop();
         }

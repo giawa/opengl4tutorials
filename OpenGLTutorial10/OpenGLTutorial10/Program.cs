@@ -11,7 +11,7 @@ namespace OpenGLTutorial10
         private static ShaderProgram program;
         private static VBO<Vector3> star;
         private static VBO<Vector2> starUV;
-        private static VBO<int> starQuads;
+        private static VBO<uint> starQuads;
         private static Texture starTexture;
         private static System.Diagnostics.Stopwatch watch;
         private static bool fullscreen = false;
@@ -73,7 +73,7 @@ namespace OpenGLTutorial10
             // each star is simply a quad
             star = new VBO<Vector3>(new Vector3[] { new Vector3(-1, -1, 0), new Vector3(1, -1, 0), new Vector3(1, 1, 0), new Vector3(-1, 1, 0) });
             starUV = new VBO<Vector2>(new Vector2[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) });
-            starQuads = new VBO<int>(new int[] { 0, 1, 2, 0, 2, 3 }, BufferTarget.ElementArrayBuffer);
+            starQuads = new VBO<uint>(new uint[] { 0, 1, 2, 0, 2, 3 }, BufferTarget.ElementArrayBuffer);
 
             // create 50 stars for this tutorial
             int numStars = 50;

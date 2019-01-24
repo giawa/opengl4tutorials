@@ -15,7 +15,7 @@ namespace OpenGLTutorial12
         private static Texture particleTexture;
         private static VBO<Vector3> particleVertices;
         private static VBO<Vector3> particleColors;
-        private static VBO<int> particlePoints;
+        private static VBO<uint> particlePoints;
 
         private static List<Particle> particles = new List<Particle>();
         private static int particleCount = 2000;
@@ -62,9 +62,9 @@ namespace OpenGLTutorial12
             particleTexture = new Texture("star.bmp");
 
             // set up the particlePoints VBO, which will stay constant
-            int[] points = new int[particleCount];
-            for (int i = 0; i < points.Length; i++) points[i] = i;
-            particlePoints = new VBO<int>(points, BufferTarget.ElementArrayBuffer);
+            uint[] points = new uint[particleCount];
+            for (uint i = 0; i < points.Length; i++) points[i] = i;
+            particlePoints = new VBO<uint>(points, BufferTarget.ElementArrayBuffer);
 
             // set up the particleColors, which we'll just keep static
             Vector3[] colors = new Vector3[particleCount];
@@ -91,6 +91,7 @@ namespace OpenGLTutorial12
 
         private static void OnClose()
         {
+            particleTexture.Dispose();
             particleVertices.Dispose();
             particleColors.Dispose();
             particlePoints.Dispose();

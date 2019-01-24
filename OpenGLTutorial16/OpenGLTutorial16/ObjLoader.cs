@@ -77,7 +77,9 @@ namespace OpenGLTutorial16
                     combinedLines.AddRange(lines);
 
                     ObjObject newObject = new ObjObject(combinedLines, materials, vertexOffset, uvOffset);
-                    objects.Add(newObject);
+                    if (newObject.VertexCount != 0) objects.Add(newObject);
+
+                    if (newObject.Material == null) newObject.Material = defaultMaterial;
                 }
             }
 
@@ -142,7 +144,7 @@ namespace OpenGLTutorial16
 
             for (int i = 0; i < objects.Count; i++)
             {
-                if (objects[i].Material.Transparency != 1f) transparentObjects.Add(objects[i]);
+                if (objects[i].Material != null && objects[i].Material.Transparency != 1f) transparentObjects.Add(objects[i]);
                 else objects[i].Draw();
             }
 
@@ -267,7 +269,7 @@ namespace OpenGLTutorial16
         private VBO<Vector3> vertices;
         private VBO<Vector3> normals;
         private VBO<Vector2> uvs;
-        private VBO<int> triangles;
+        private VBO<uint> triangles;
 
         public string Name { get; private set; }
 
@@ -285,9 +287,9 @@ namespace OpenGLTutorial16
 
             List<Vector3> vertexList = new List<Vector3>();
             List<Vector2> uvList = new List<Vector2>();
-            List<int> triangleList = new List<int>();
+            List<uint> triangleList = new List<uint>();
             List<Vector2> unpackedUvs = new List<Vector2>();
-            List<int> normalsList = new List<int>();
+            List<uint> normalsList = new List<uint>();
 
             // now we read the lines
             for (int i = 0; i < lines.Count; i++)
@@ -325,17 +327,17 @@ namespace OpenGLTutorial16
 
             // calculate the normals (if they didn't exist)
             Vector3[] vertexData = vertexList.ToArray();
-            int[] elementData = triangleList.ToArray();
+            uint[] elementData = triangleList.ToArray();
             Vector3[] normalData = CalculateNormals(vertexData, elementData);
 
             // now convert the lists over to vertex buffer objects to be rendered by OpenGL
             this.vertices = new VBO<Vector3>(vertexData);
             this.normals = new VBO<Vector3>(normalData);
             if (unpackedUvs.Count != 0) this.uvs = new VBO<Vector2>(unpackedUvs.ToArray());
-            this.triangles = new VBO<int>(elementData, BufferTarget.ElementArrayBuffer);
+            this.triangles = new VBO<uint>(elementData, BufferTarget.ElementArrayBuffer);
         }
 
-        private void UnpackFace(string[] split, int vertexOffset, int uvOffset, List<Vector3> vertexList, List<Vector2> uvList, List<int> triangleList, List<Vector2> unpackedUvs, List<int> normalsList)
+        private void UnpackFace(string[] split, int vertexOffset, int uvOffset, List<Vector3> vertexList, List<Vector2> uvList, List<uint> triangleList, List<Vector2> unpackedUvs, List<uint> normalsList)
         {
             string[] indices = new string[] { split[1], split[2], split[3] };
 
@@ -359,9 +361,9 @@ namespace OpenGLTutorial16
                 }
                 else
                 {
-                    normalsList.Add(triangle[0]);
-                    normalsList.Add(triangle[1]);
-                    normalsList.Add(triangle[2]);
+                    normalsList.Add((uint)triangle[0]);
+                    normalsList.Add((uint)triangle[1]);
+                    normalsList.Add((uint)triangle[2]);
                 }
 
                 if (unpackedUvs[triangle[0]] == Vector2.Zero) unpackedUvs[triangle[0]] = uvList[int.Parse(uvs[0]) - uvOffset];
@@ -388,28 +390,28 @@ namespace OpenGLTutorial16
                     triangle[2] = unpackedUvs.Count - 1;
                 }
 
-                triangleList.Add(triangle[0]);
-                triangleList.Add(triangle[1]);
-                triangleList.Add(triangle[2]);
+                triangleList.Add((uint)triangle[0]);
+                triangleList.Add((uint)triangle[1]);
+                triangleList.Add((uint)triangle[2]);
             }
             else
             {
-                triangleList.Add(int.Parse(indices[0]) - vertexOffset);
-                triangleList.Add(int.Parse(indices[1]) - vertexOffset);
-                triangleList.Add(int.Parse(indices[2]) - vertexOffset);
+                triangleList.Add((uint)(int.Parse(indices[0]) - vertexOffset));
+                triangleList.Add((uint)(int.Parse(indices[1]) - vertexOffset));
+                triangleList.Add((uint)(int.Parse(indices[2]) - vertexOffset));
             }
         }
 
-        public static Vector3[] CalculateNormals(Vector3[] vertexData, int[] elementData)
+        public static Vector3[] CalculateNormals(Vector3[] vertexData, uint[] elementData)
         {
             Vector3 b1, b2, normal;
             Vector3[] normalData = new Vector3[vertexData.Length];
 
             for (int i = 0; i < elementData.Length / 3; i++)
             {
-                int cornerA = elementData[i * 3];
-                int cornerB = elementData[i * 3 + 1];
-                int cornerC = elementData[i * 3 + 2];
+                uint cornerA = elementData[i * 3];
+                uint cornerB = elementData[i * 3 + 1];
+                uint cornerC = elementData[i * 3 + 2];
 
                 b1 = vertexData[cornerB] - vertexData[cornerA];
                 b2 = vertexData[cornerC] - vertexData[cornerA];
@@ -432,6 +434,7 @@ namespace OpenGLTutorial16
             //if (Material == null) return;
 
             Gl.Disable(EnableCap.CullFace);
+
             if (Material != null) Material.Use();
 
             Gl.BindBufferToShaderAttribute(vertices, Material.Program, "vertexPosition");

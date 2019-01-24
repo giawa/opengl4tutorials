@@ -57,7 +57,7 @@ namespace OpenGLTutorial16
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
             program["model_matrix"].SetValue(Matrix4.Identity);
 
-            objectFile = new ObjLoader("enterprise/enterprise.obj", program);
+            objectFile = new ObjLoader("teapot.obj", program);
 
             // load the bitmap font for this tutorial
             font = new BMFont("font24.fnt", "font24.png");

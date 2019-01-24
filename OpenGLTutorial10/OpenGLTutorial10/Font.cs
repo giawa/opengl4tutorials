@@ -11,11 +11,11 @@ namespace OpenGLTutorial10
         private ShaderProgram program;
         private VBO<Vector3> vertices;
         private VBO<Vector2> uvs;
-        private VBO<int> triangles;
+        private VBO<uint> triangles;
 
         public Vector2 Position { get; set; }
 
-        public FontVAO(ShaderProgram program, VBO<Vector3> vertices, VBO<Vector2> uvs, VBO<int> triangles)
+        public FontVAO(ShaderProgram program, VBO<Vector3> vertices, VBO<Vector2> uvs, VBO<uint> triangles)
         {
             this.program = program;
             this.vertices = vertices;
@@ -177,7 +177,7 @@ namespace OpenGLTutorial10
         {
             Vector3[] vertices = new Vector3[text.Length * 4];
             Vector2[] uvs = new Vector2[text.Length * 4];
-            int[] indices = new int[text.Length * 6];
+            uint[] indices = new uint[text.Length * 6];
 
             int xpos = 0, width = 0;
 
@@ -190,10 +190,10 @@ namespace OpenGLTutorial10
                 else xpos = -width / 2;
             }
 
-            for (int i = 0; i < text.Length; i++)
+            for (uint i = 0; i < text.Length; i++)
             {
                 // grab the character, replacing with ' ' if the character isn't loaded
-                Character ch = characters[characters.ContainsKey(text[i]) ? text[i] : ' '];
+                Character ch = characters[characters.ContainsKey(text[(int)i]) ? text[(int)i] : ' '];
 
                 vertices[i * 4 + 0] = new Vector3(xpos, ch.height, 0);
                 vertices[i * 4 + 1] = new Vector3(xpos, 0, 0);
@@ -215,7 +215,7 @@ namespace OpenGLTutorial10
             }
 
             // Create the vertex buffer objects and then create the array object
-            return new FontVAO(program, new VBO<Vector3>(vertices), new VBO<Vector2>(uvs), new VBO<int>(indices, BufferTarget.ElementArrayBuffer));
+            return new FontVAO(program, new VBO<Vector3>(vertices), new VBO<Vector2>(uvs), new VBO<uint>(indices, BufferTarget.ElementArrayBuffer));
         }
 
         public static string FontVertexSource = @"

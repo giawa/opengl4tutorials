@@ -10,7 +10,7 @@ namespace OpenGLTutorial5
         private static ShaderProgram program;
         private static VBO<Vector3> pyramid, cube;
         private static VBO<Vector3> pyramidColor, cubeColor;
-        private static VBO<int> pyramidTriangles, cubeQuads;
+        private static VBO<uint> pyramidTriangles, cubeQuads;
         private static System.Diagnostics.Stopwatch watch;
         private static float angle;
 
@@ -49,7 +49,7 @@ namespace OpenGLTutorial5
                 new Vector3(1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0),
                 new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1),
                 new Vector3(1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 1, 0) });
-            pyramidTriangles = new VBO<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, BufferTarget.ElementArrayBuffer);
+            pyramidTriangles = new VBO<uint>(new uint[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, BufferTarget.ElementArrayBuffer);
 
             // create a cube with vertices and colors
             cube = new VBO<Vector3>(new Vector3[] {
@@ -66,7 +66,7 @@ namespace OpenGLTutorial5
                 new Vector3(1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, 1, 0), 
                 new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 1), 
                 new Vector3(1, 0, 1), new Vector3(1, 0, 1), new Vector3(1, 0, 1), new Vector3(1, 0, 1) });
-            cubeQuads = new VBO<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }, BufferTarget.ElementArrayBuffer);
+            cubeQuads = new VBO<uint>(new uint[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 }, BufferTarget.ElementArrayBuffer);
 
             watch = System.Diagnostics.Stopwatch.StartNew();
 

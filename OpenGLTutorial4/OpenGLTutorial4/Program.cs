@@ -10,7 +10,7 @@ namespace OpenGLTutorial4
         private static ShaderProgram program;
         private static VBO<Vector3> triangle, square;
         private static VBO<Vector3> triangleColor, squareColor;
-        private static VBO<int> triangleElements, squareElements;
+        private static VBO<uint> triangleElements, squareElements;
         private static System.Diagnostics.Stopwatch watch;
         private static float angle;
 
@@ -41,11 +41,11 @@ namespace OpenGLTutorial4
             // create a triangle with vertices and colors
             triangle = new VBO<Vector3>(new Vector3[] { new Vector3(0, 1, 0), new Vector3(-1, -1, 0), new Vector3(1, -1, 0) });
             triangleColor = new VBO<Vector3>(new Vector3[] { new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1) });
-            triangleElements = new VBO<int>(new int[] { 0, 1, 2 }, BufferTarget.ElementArrayBuffer);
+            triangleElements = new VBO<uint>(new uint[] { 0, 1, 2 }, BufferTarget.ElementArrayBuffer);
             
             // create a square with vertices an colors
             square = new VBO<Vector3>(new Vector3[] { new Vector3(-1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0) });
-            squareElements = new VBO<int>(new int[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
+            squareElements = new VBO<uint>(new uint[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
             squareColor = new VBO<Vector3>(new Vector3[] { new Vector3(0.5f, 0.5f, 1), new Vector3(0.5f, 0.5f, 1), new Vector3(0.5f, 0.5f, 1), new Vector3(0.5f, 0.5f, 1) });
 
             watch = System.Diagnostics.Stopwatch.StartNew();

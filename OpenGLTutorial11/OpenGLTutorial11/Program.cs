@@ -16,7 +16,7 @@ namespace OpenGLTutorial11
         private static ShaderProgram program;
         private static VBO<Vector3> flagVertices;
         private static VBO<Vector2> flagUVs;
-        private static VBO<int> flagTriangles;
+        private static VBO<uint> flagTriangles;
         private static float flagTime;
         private static Texture flagTexture;
 
@@ -59,7 +59,7 @@ namespace OpenGLTutorial11
             // create the flag, which is just a plane with a certain number of segments
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> uvs = new List<Vector2>();
-            List<int> triangles = new List<int>();
+            List<uint> triangles = new List<uint>();
             for (int x = 0; x < 40; x++)
             {
                 for (int y = 0; y < 40; y++)
@@ -69,19 +69,19 @@ namespace OpenGLTutorial11
 
                     if (y == 39 || x == 39) continue;
 
-                    triangles.Add(x * 40 + y);
-                    triangles.Add((x + 1) * 40 + y);
-                    triangles.Add((x + 1) * 40 + y + 1);
+                    triangles.Add((uint)(x * 40 + y));
+                    triangles.Add((uint)((x + 1) * 40 + y));
+                    triangles.Add((uint)((x + 1) * 40 + y + 1));
 
-                    triangles.Add(x * 40 + y);
-                    triangles.Add((x + 1) * 40 + y + 1);
-                    triangles.Add(x * 40 + y + 1);
+                    triangles.Add((uint)(x * 40 + y));
+                    triangles.Add((uint)((x + 1) * 40 + y + 1));
+                    triangles.Add((uint)(x * 40 + y + 1));
                 }
             }
 
             flagVertices = new VBO<Vector3>(vertices.ToArray());
             flagUVs = new VBO<Vector2>(uvs.ToArray());
-            flagTriangles = new VBO<int>(triangles.ToArray(), BufferTarget.ElementArrayBuffer);
+            flagTriangles = new VBO<uint>(triangles.ToArray(), BufferTarget.ElementArrayBuffer);
 
             // load the bitmap font for this tutorial
             font = new BMFont("font24.fnt", "font24.png");
