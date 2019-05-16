@@ -61,22 +61,19 @@ namespace OpenGLTutorial10
         private struct Character
         {
             public char id;
-            public float x1;
-            public float y1;
-            public float x2;
-            public float y2;
-            public float width;
-            public float height;
+            public Vector2 texturePosition;
+            public Vector2 size;
+            public Vector2 bearing;
+            public int advance;
 
-            public Character(char _id, float _x1, float _y1, float _x2, float _y2, float _w, float _h)
+
+            public Character(char id, Vector2 texturePosition, Vector2 size, Vector2 bearing, int advance)
             {
-                id = _id;
-                x1 = _x1;
-                y1 = _y1;
-                x2 = _x2;
-                y2 = _y2;
-                width = _w;
-                height = _h;
+                this.id = id;
+                this.texturePosition = texturePosition;
+                this.size = size;
+                this.bearing = bearing;
+                this.advance = advance;
             }
         }
 
@@ -124,8 +121,8 @@ namespace OpenGLTutorial10
                         // split up the different entries on this line to be parsed
                         string[] split = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        int id = 0;
-                        float x1 = 0, y1 = 0, x2 = 0, y2 = 0, w = 0, h = 0;
+                        int id = 0, advance = 0;
+                        float x = 0, y = 0, w = 0, h = 0, xoffset = 0, yoffset = 0;
 
                         // parse the contents of the line, looking for key words
                         for (int i = 0; i < split.Length; i++)
@@ -135,23 +132,21 @@ namespace OpenGLTutorial10
                             int value = int.Parse(split[i].Substring(split[i].IndexOf('=') + 1));
 
                             if (code == "id") id = value;
-                            else if (code == "x") x1 = (float)value / FontTexture.Size.Width;
-                            else if (code == "y") y1 = 1 - (float)value / FontTexture.Size.Height;
-                            else if (code == "width")
-                            {
-                                w = (float)value;
-                                x2 = x1 + w / FontTexture.Size.Width;
-                            }
+                            else if (code == "x") x = (float)value / FontTexture.Size.Width;
+                            else if (code == "y") y = 1 - (float)value / FontTexture.Size.Height;
+                            else if (code == "width") w = (float)value;
                             else if (code == "height")
                             {
                                 h = (float)value;
-                                y2 = y1 - h / FontTexture.Size.Height;
                                 this.Height = Math.Max(this.Height, value);
                             }
+                            else if (code == "xoffset") xoffset = (float)value;
+                            else if (code == "yoffset") yoffset = (float)value;
+                            else if (code == "xadvance") advance = value;
                         }
 
                         // store this character into our dictionary (if it doesn't already exist)
-                        Character c = new Character((char)id, x1, y1, x2, y2, w, h);
+                        Character c = new Character((char)id, new Vector2(x, y), new Vector2(w, h), new Vector2(xoffset, yoffset), advance);
                         if (!characters.ContainsKey(c.id)) characters.Add(c.id, c);
                     }
                 }
@@ -168,7 +163,7 @@ namespace OpenGLTutorial10
             int width = 0;
 
             for (int i = 0; i < text.Length; i++)
-                width += (int)characters[characters.ContainsKey(text[i]) ? text[i] : ' '].width;
+                width += (int)characters[characters.ContainsKey(text[i]) ? text[i] : ' '].advance;
 
             return width;
         }
@@ -185,7 +180,7 @@ namespace OpenGLTutorial10
             if (justification != Justification.Left)
             {
                 for (int i = 0; i < text.Length; i++)
-                    width += (int)characters[characters.ContainsKey(text[i]) ? text[i] : ' '].width;
+                width += (int)characters[characters.ContainsKey(text[i]) ? text[i] : ' '].advance;
                 if (justification == Justification.Right) xpos = -width;
                 else xpos = -width / 2;
             }
@@ -195,16 +190,20 @@ namespace OpenGLTutorial10
                 // grab the character, replacing with ' ' if the character isn't loaded
                 Character ch = characters[characters.ContainsKey(text[(int)i]) ? text[(int)i] : ' '];
 
-                vertices[i * 4 + 0] = new Vector3(xpos, ch.height, 0);
-                vertices[i * 4 + 1] = new Vector3(xpos, 0, 0);
-                vertices[i * 4 + 2] = new Vector3(xpos + ch.width, ch.height, 0);
-                vertices[i * 4 + 3] = new Vector3(xpos + ch.width, 0, 0);
-                xpos += (int)ch.width;
+                vertices[i * 4 + 0] = new Vector3(xpos + ch.bearing.X,- ch.bearing.Y, 0);
+                vertices[i * 4 + 1] = new Vector3(xpos + ch.bearing.X, -(ch.bearing.Y + ch.size.Y), 0);
+                vertices[i * 4 + 2] = new Vector3(xpos + ch.bearing.X + ch.size.X, -ch.bearing.Y, 0);
+                vertices[i * 4 + 3] = new Vector3(xpos + ch.bearing.X + ch.size.X, -(ch.bearing.Y + ch.size.Y), 0);
+                xpos += ch.advance;
 
-                uvs[i * 4 + 0] = new Vector2(ch.x1, ch.y1);
-                uvs[i * 4 + 1] = new Vector2(ch.x1, ch.y2);
-                uvs[i * 4 + 2] = new Vector2(ch.x2, ch.y1);
-                uvs[i * 4 + 3] = new Vector2(ch.x2, ch.y2);
+
+                Vector2 bottomRight = ch.texturePosition
+                    + new Vector2(ch.size.X / FontTexture.Size.Width, -ch.size.Y / FontTexture.Size.Height);
+
+                uvs[i * 4 + 0] = new Vector2(ch.texturePosition.X, ch.texturePosition.Y);
+                uvs[i * 4 + 1] = new Vector2(ch.texturePosition.X, bottomRight.Y);
+                uvs[i * 4 + 2] = new Vector2(bottomRight.X, ch.texturePosition.Y);
+                uvs[i * 4 + 3] = new Vector2(bottomRight.X, bottomRight.Y);
 
                 indices[i * 6 + 0] = i * 4 + 2;
                 indices[i * 6 + 1] = i * 4 + 0;
