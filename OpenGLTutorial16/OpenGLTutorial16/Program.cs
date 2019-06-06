@@ -67,7 +67,7 @@ namespace OpenGLTutorial16
             fontProgram["ortho_matrix"].SetValue(Matrix4.CreateOrthographic(width, height, 0, 1000));
             fontProgram["color"].SetValue(new Vector3(1, 1, 1));
 
-            information = font.CreateString(fontProgram, "OpenGL  C#  Tutorial  16");
+            information = font.CreateString(fontProgram, "OpenGL C# Tutorial 16");
 
             watch = System.Diagnostics.Stopwatch.StartNew();
 

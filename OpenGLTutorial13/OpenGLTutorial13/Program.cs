@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tao.FreeGlut;
 using OpenGL;
 
-namespace OpenGLTutorial12
+namespace OpenGLTutorial13
 {
     class Program
     {
@@ -102,7 +102,7 @@ namespace OpenGLTutorial12
             fontProgram["ortho_matrix"].SetValue(Matrix4.CreateOrthographic(width, height, 0, 1000));
             fontProgram["color"].SetValue(new Vector3(1, 1, 1));
 
-            information = font.CreateString(fontProgram, "OpenGL  C#  Tutorial  13");
+            information = font.CreateString(fontProgram, "OpenGL C# Tutorial 13");
 
             watch = System.Diagnostics.Stopwatch.StartNew();
 

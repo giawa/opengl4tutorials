@@ -89,7 +89,7 @@ namespace OpenGLTutorial10
             fontProgram["ortho_matrix"].SetValue(Matrix4.CreateOrthographic(width, height, 0, 1000));
             fontProgram["color"].SetValue(new Vector3(1, 1, 1));
 
-            information = font.CreateString(fontProgram, "OpenGL  C#  Tutorial  10");
+            information = font.CreateString(fontProgram, "OpenGL C# Tutorial 10");
 
             watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -171,7 +171,7 @@ namespace OpenGLTutorial10
             Gl.BindTexture(font.FontTexture);
 
             // build this string every frame, since theta and phi can change
-            FontVAO vao = font.CreateString(fontProgram, string.Format("Theta:   {0:0.000},  Phi:   {1:0.000}", theta, phi), BMFont.Justification.Right);
+            FontVAO vao = font.CreateString(fontProgram, string.Format("Theta: {0:0.000}, Phi: {1:0.000}", theta, phi), BMFont.Justification.Right);
             vao.Position = new Vector2(width / 2 - 10, height / 2 - font.Height - 10);
             vao.Draw();
             vao.Dispose();
