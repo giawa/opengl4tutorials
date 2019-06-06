@@ -190,10 +190,10 @@ namespace OpenGLTutorial10
                 // grab the character, replacing with ' ' if the character isn't loaded
                 Character ch = characters[characters.ContainsKey(text[(int)i]) ? text[(int)i] : ' '];
 
-                vertices[i * 4 + 0] = new Vector3(xpos + ch.bearing.X,- ch.bearing.Y, 0);
-                vertices[i * 4 + 1] = new Vector3(xpos + ch.bearing.X, -(ch.bearing.Y + ch.size.Y), 0);
-                vertices[i * 4 + 2] = new Vector3(xpos + ch.bearing.X + ch.size.X, -ch.bearing.Y, 0);
-                vertices[i * 4 + 3] = new Vector3(xpos + ch.bearing.X + ch.size.X, -(ch.bearing.Y + ch.size.Y), 0);
+                vertices[i * 4 + 0] = new Vector3(xpos + ch.bearing.X, Height - ch.bearing.Y, 0);
+                vertices[i * 4 + 1] = new Vector3(xpos + ch.bearing.X, Height - (ch.bearing.Y + ch.size.Y), 0);
+                vertices[i * 4 + 2] = new Vector3(xpos + ch.bearing.X + ch.size.X, Height - ch.bearing.Y, 0);
+                vertices[i * 4 + 3] = new Vector3(xpos + ch.bearing.X + ch.size.X, Height - (ch.bearing.Y + ch.size.Y), 0);
                 xpos += ch.advance;
 
 
